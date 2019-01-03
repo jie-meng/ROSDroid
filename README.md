@@ -1,5 +1,7 @@
 # ROSDroid -- An ROS libray for Android to connect to ROS bridge
 
+[![](https://jitpack.io/v/jie-meng/ROSDroid.svg)](https://jitpack.io/#jie-meng/ROSDroid)
+
 Library code comes from [ROSBridgeClient](https://github.com/djilk/ROSBridgeClient), ROSDroid project is a wrapper and you can add it to your project from _jitpack.io_ 
 
 ## How to import ROSDroid library into Android project
