@@ -23,8 +23,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        initROS()
+        initListeners()
+    }
+
+    private fun initROS() {
+        chatterTopic = Topic("/chatter", ROSString::class.java, client)
+    }
+
+    private fun initListeners() {
         connect.setOnClickListener {
-            clickConnect()
+            if (isConnected()) {
+                disconnect()
+            } else {
+                connect()
+            }
+        }
+
+        subscribe.setOnClickListener {
+            if (isSubscribed()) {
+                unsubscribe()
+            } else {
+                subscribe()
+            }
         }
 
         send_topic.setOnClickListener {
@@ -32,62 +53,85 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun clickConnect() {
-        client.uriString = "ws://${ros_bridge_ip.text}:9090"
-        val connect = client.connect(object : ROSClient.ConnectionStatusListener {
-            override fun onConnect() {
-                runOnUiThread {
-                    connect_status.setBackgroundColor(
-                        ContextCompat.getColor(
-                            this@MainActivity,
-                            android.R.color.holo_green_dark
-                        )
-                    )
-
-                    subscribeChatterTopic()
-                }
-            }
-
-            override fun onDisconnect(normal: Boolean, reason: String?, code: Int) {
-                runOnUiThread {
-                    connect_status.setBackgroundColor(
-                        ContextCompat.getColor(
-                            this@MainActivity,
-                            android.R.color.darker_gray
-                        )
-                    )
-                }
-            }
-
-            override fun onError(ex: Exception?) {
-                runOnUiThread {
-                    connect_status.setBackgroundColor(
-                        ContextCompat.getColor(
-                            this@MainActivity,
-                            android.R.color.holo_red_dark
-                        )
-                    )
-                }
-            }
-        })
-
-        if (!connect) {
-            connect_status.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    android.R.color.darker_gray
-                )
-            )
-        }
-    }
-
-    private fun subscribeChatterTopic() {
-        chatterTopic = Topic("/chatter", ROSString::class.java, client)
+    private fun subscribe() {
         chatterTopic.subscribe { message ->
             runOnUiThread {
                 receive_topic.text = message!!.data + "\n" + receive_topic.text.toString()
             }
         }
+
+        subscribe.text = getString(R.string.unsubscribe)
+    }
+
+    private fun unsubscribe() {
+        chatterTopic.unsubscribe()
+        subscribe.text = getString(R.string.subscribe)
+    }
+
+    private val connectionStatusListener = object : ROSClient.ConnectionStatusListener {
+        override fun onConnect() {
+            runOnUiThread {
+                setConnectStatus()
+            }
+        }
+
+        override fun onDisconnect(normal: Boolean, reason: String?, code: Int) {
+            runOnUiThread {
+                setDisconnectStatus()
+            }
+        }
+
+        override fun onError(ex: Exception?) {
+            runOnUiThread {
+                setConnectErrorStatus()
+            }
+        }
+    }
+
+    private fun connect() {
+        client.uriString = "ws://${ros_bridge_ip.text}:9090"
+        if (!client.connect(connectionStatusListener)) {
+            setDisconnectStatus()
+        }
+    }
+
+    private fun setConnectStatus() {
+        connect.text = getString(R.string.disconnect)
+        connect_status.setBackgroundColor(
+            ContextCompat.getColor(
+                this@MainActivity,
+                android.R.color.holo_green_dark
+            )
+        )
+        subscribe.isEnabled = true
+        send_topic.isEnabled = true
+        ros_bridge_ip.isEnabled =
+    }
+
+    private fun setDisconnectStatus() {
+        connect.text = getString(R.string.connect)
+        connect_status.setBackgroundColor(
+            ContextCompat.getColor(
+                this@MainActivity,
+                android.R.color.darker_gray
+            )
+        )
+        subscribe.isEnabled = false
+        send_topic.isEnabled = false
+        ros_bridge_ip.isEnabled = true
+    }
+
+    private fun setConnectErrorStatus() {
+        connect.text = getString(R.string.connect)
+        connect_status.setBackgroundColor(
+            ContextCompat.getColor(
+                this@MainActivity,
+                android.R.color.holo_red_dark
+            )
+        )
+        subscribe.isEnabled = false
+        send_topic.isEnabled = false
+        ros_bridge_ip.isEnabled = true
     }
 
     private fun sendTopic() {
@@ -97,12 +141,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun disconnect() {
-        chatterTopic.unsubscribe()
+        if (isSubscribed()) {
+            unsubscribe()
+        }
+
         client.disconnect()
     }
 
+    private fun isConnected(): Boolean {
+        return connect.text == getString(R.string.disconnect)
+    }
+
+    private fun isSubscribed(): Boolean {
+        return subscribe.text == getString(R.string.unsubscribe)
+    }
+
     override fun onDestroy() {
-        disconnect()
+        if (isConnected()) {
+            disconnect()
+        }
         super.onDestroy()
     }
 }

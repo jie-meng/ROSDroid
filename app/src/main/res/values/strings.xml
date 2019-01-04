@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">ROSDroid</string>
-    <string name="disconnect">disconnect</string>
     <string name="send_topic">Send Topic</string>
-    <string name="ros_bridge_ip">ROSBridgeIp</string>
+    <string name="ros_bridge_ip">ROS Bridge IP</string>
+    <string name="connect">connect</string>
+    <string name="disconnect">disconnect</string>
+    <string name="subscribe">subscribe</string>
+    <string name="unsubscribe">unsubscribe</string>
 </resources>

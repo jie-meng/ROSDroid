@@ -29,8 +29,7 @@
                 android:layout_height="20dp"
                 android:layout_weight="0"
                 android:layout_gravity="center_vertical"
-                android:background="@android:color/darker_gray"
-        />
+                android:background="@android:color/darker_gray"/>
     </LinearLayout>
 
     <Button
@@ -38,7 +37,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Connect"/>
+            android:text="@string/connect"/>
+
+    <Button
+            android:id="@+id/subscribe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/subscribe"/>
 
     <EditText
             android:id="@+id/text_send"
@@ -49,11 +55,12 @@
             android:id="@+id/send_topic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/send_topic"/>
+            android:text="@string/send_topic"
+            android:enabled="false"/>
+
     <TextView
             android:id="@+id/receive_topic"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-    />
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
