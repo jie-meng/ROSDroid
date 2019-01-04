@@ -6,4 +6,7 @@
     <string name="disconnect">disconnect</string>
     <string name="subscribe">subscribe</string>
     <string name="unsubscribe">unsubscribe</string>
+    <string name="call_service">Call Service</string>
+    <string name="call_service_add_two_ints">Call service add two ints</string>
+    <string name="call_service_say_hi">Call service say hi</string>
 </resources>

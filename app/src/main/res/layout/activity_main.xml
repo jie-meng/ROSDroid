@@ -61,6 +61,25 @@
     <TextView
             android:id="@+id/receive_topic"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="50dp"/>
+    <Button
+            android:id="@+id/call_service_add_two_ints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:text="@string/call_service_add_two_ints"/>
+    <Button
+            android:id="@+id/call_service_say_hi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:text="@string/call_service_say_hi"/>
+    <TextView
+            android:id="@+id/call_server_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"/>
 
 </LinearLayout>

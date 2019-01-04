@@ -3,7 +3,12 @@ package com.rosdroid
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import com.rosdroid.message.AddTwoIntsRequest
+import com.rosdroid.message.AddTwoIntsResponse
+import com.rosdroid.message.SayHiRequest
+import com.rosdroid.message.SayHiResponse
 import com.rosdroid.roslib.ROSClient
+import com.rosdroid.roslib.Service
 import com.rosdroid.roslib.Topic
 import com.rosdroid.roslib.message.ROSString
 import com.rosdroid.roslib.rosbridge.ROSBridgeClient
@@ -50,6 +55,42 @@ class MainActivity : AppCompatActivity() {
 
         send_topic.setOnClickListener {
             sendTopic()
+        }
+
+        call_service_add_two_ints.setOnClickListener {
+            callServiceAddTwoInts()
+        }
+
+        call_service_say_hi.setOnClickListener {
+            callServiceSayHi()
+        }
+    }
+
+    private fun checkSrvInterface() {
+        client.services.forEach { it ->
+            println(">>>>>>>> $it")
+            client.getServiceRequestDetails(it).print()
+            client.getServiceResponseDetails(it).print()
+            println("")
+        }
+    }
+
+    private fun callServiceAddTwoInts() {
+        val addTwoIntsService = Service<AddTwoIntsRequest, AddTwoIntsResponse>("/add_two_ints", AddTwoIntsRequest::class.java, AddTwoIntsResponse::class.java, client)
+        val addTwoIntRequest = AddTwoIntsRequest()
+        addTwoIntRequest.a = 9
+        addTwoIntRequest.b = 5
+        addTwoIntsService.callWithHandler(addTwoIntRequest) {
+            res -> call_server_result.text = res.sum.toString()
+        }
+    }
+
+    private fun callServiceSayHi() {
+        val sayHiService = Service<SayHiRequest, SayHiResponse>("/say_hi", SayHiRequest::class.java, SayHiResponse::class.java, client)
+        val sayHiRequest = SayHiRequest()
+        sayHiRequest.ask = "hello"
+        sayHiService.callWithHandler(sayHiRequest) {
+                res -> call_server_result.text = res.answer.toString()
         }
     }
 
@@ -105,6 +146,8 @@ class MainActivity : AppCompatActivity() {
         )
         subscribe.isEnabled = true
         send_topic.isEnabled = true
+        call_service_add_two_ints.isEnabled = true
+        call_service_say_hi.isEnabled = true
         ros_bridge_ip.isEnabled = false
     }
 
@@ -118,6 +161,8 @@ class MainActivity : AppCompatActivity() {
         )
         subscribe.isEnabled = false
         send_topic.isEnabled = false
+        call_service_add_two_ints.isEnabled = false
+        call_service_say_hi.isEnabled = false
         ros_bridge_ip.isEnabled = true
     }
 
@@ -131,12 +176,13 @@ class MainActivity : AppCompatActivity() {
         )
         subscribe.isEnabled = false
         send_topic.isEnabled = false
+        call_service_add_two_ints.isEnabled = false
+        call_service_say_hi.isEnabled = false
         ros_bridge_ip.isEnabled = true
     }
 
     private fun sendTopic() {
-        val rosString = ROSString()
-        rosString.data = text_send.text.toString()
+        val rosString = ROSString(text_send.text)
         chatterTopic.publish(rosString)
     }
 
