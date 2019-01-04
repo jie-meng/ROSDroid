@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         )
         subscribe.isEnabled = true
         send_topic.isEnabled = true
-        ros_bridge_ip.isEnabled =
+        ros_bridge_ip.isEnabled = false
     }
 
     private fun setDisconnectStatus() {
