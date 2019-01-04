@@ -114,7 +114,7 @@ public class Example {
     }
 
     public static void testTopic(ROSBridgeClient client) {
-        com.rosdroid.roslib.Topic<Clock> clockTopic = new com.rosdroid.roslib.Topic<Clock>("/clock", Clock.class, client);
+        com.rosdroid.roslib.Topic<Clock> clockTopic = new com.rosdroid.roslib.Topic<>("/clock", Clock.class, client);
         clockTopic.subscribe();
         try {
             Thread.sleep(20000);
