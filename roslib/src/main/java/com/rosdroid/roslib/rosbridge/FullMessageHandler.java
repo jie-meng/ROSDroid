@@ -22,5 +22,5 @@ package com.rosdroid.roslib.rosbridge;
 import com.rosdroid.roslib.message.Message;
 
 public interface FullMessageHandler<T extends Message> {
-    public void onMessage(String id, T message);
+    void onMessage(String id, T message);
 }

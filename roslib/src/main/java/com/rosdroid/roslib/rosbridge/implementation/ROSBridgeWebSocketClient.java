@@ -45,8 +45,8 @@ public class ROSBridgeWebSocketClient extends WebSocketClient {
     
     ROSBridgeWebSocketClient(URI serverURI) {
         super(serverURI);
-        classes = new Registry<Class>();
-        handlers = new Registry<FullMessageHandler>();
+        classes = new Registry<>();
+        handlers = new Registry<>();
         Operation.initialize(classes);  // note, this ensures that the Message Map is initialized too
         listener = null;
     }
@@ -108,7 +108,6 @@ public class ROSBridgeWebSocketClient extends WebSocketClient {
                 System.out.println("Publish " + ((Publish) operation).topic); 
             else if (operation instanceof ServiceResponse)
                 System.out.println("Service Response " + ((ServiceResponse) operation).service); 
-            //operation.print();
         }
     }
        

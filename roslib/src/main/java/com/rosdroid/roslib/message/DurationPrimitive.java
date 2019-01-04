@@ -21,5 +21,4 @@ package com.rosdroid.roslib.message;
 
 @MessageType(string = "duration")
 public class DurationPrimitive extends TimePrimitive {
-
 }

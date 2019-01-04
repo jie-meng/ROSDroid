@@ -91,7 +91,7 @@ public class Topic<T extends Message> extends LinkedBlockingQueue<T> implements 
         send(new Publish(topic, message));
     }
     
-    public void unAdvertise() {
+    public void unadvertise() {
         send(new Unadvertise(topic));
     }
     

@@ -21,7 +21,7 @@ package com.rosdroid.roslib.rosbridge.operation;
 
 import com.rosdroid.roslib.message.MessageType;
 
-@MessageType(string = "unAdvertise")
+@MessageType(string = "unadvertise")
 public class Unadvertise extends Operation {
     public String topic;
 

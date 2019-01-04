@@ -130,6 +130,6 @@ public class Example {
         clockTopic.unsubscribe();
         clockTopic.advertise();
         clockTopic.publish(cl);
-        clockTopic.unAdvertise();
+        clockTopic.unadvertise();
     }
 }
